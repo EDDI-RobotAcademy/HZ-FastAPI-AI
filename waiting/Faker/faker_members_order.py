@@ -11,6 +11,41 @@ Faker.seed()  # 초기 seed 설정
 
 orders = []
 
+# food_id와 drink_id에 해당 가격을 매핑하는 딕셔너리
+food_prices = {
+    1: 23000,
+    2: 21000,
+    3: 20000,
+    4: 23000,
+    5: 22000,
+    6: 25000,
+    7: 24000,
+    8: 26000,
+    9: 27000,
+    10: 28000,
+    11: 29000,
+    12: 30000,
+    13: 31000,
+    14: 32000
+}
+
+drink_prices = {
+    1: 5000,
+    2: 5500,
+    3: 6000,
+    4: 6500,
+    5: 7000,
+    6: 7500,
+    7: 8000,
+    8: 8500,
+    9: 9000,
+    10: 9500,
+    11: 10000,
+    12: 10500,
+    13: 11000,
+    14: 11500
+}
+
 # 1000명의 회원에 대해 주문 정보 생성
 for idx in range(1, 1001):
     num_orders = random.randint(10, 500)  # 주문 개수는 10부터 500개 사이에서 랜덤
@@ -34,7 +69,6 @@ for idx in range(1, 1001):
 
             order_date = next_order_date
 
-        total_purchase_amount = round(random.uniform(10.0, 500.0), 2)
         food_id = random.randint(1, 14)  # 1부터 14 사이의 음식 ID 생성
         drink_id = random.randint(1, 14)  # 1부터 14 사이의 음료 ID 생성
 
@@ -47,12 +81,17 @@ for idx in range(1, 1001):
         food_quantity = np.clip(food_quantity, 1, 14)
         drink_quantity = np.clip(drink_quantity, 1, 14)
 
+        # 총 구매 금액 계산
+        total_purchase_amount = (food_prices[food_id] * food_quantity) + (drink_prices[drink_id] * drink_quantity)
+
         order_info = {
             'order_id': user_orders,  # 회원의 주문 횟수를 order_id로 사용
             'user_id': df_members.loc[idx - 1, 'account_id'],  # 회원의 account_id를 사용하여 user_id 설정
             'order_date': order_date,
             'food_id': food_id,
+            'food_price': food_prices[food_id],  # food_id의 가격을 지정
             'drink_id': drink_id,
+            'drink_price': drink_prices[drink_id],  # drink_id의 가격을 지정
             'food_quantity': food_quantity,
             'drink_quantity': drink_quantity,
             'total_purchase_amount': total_purchase_amount,
