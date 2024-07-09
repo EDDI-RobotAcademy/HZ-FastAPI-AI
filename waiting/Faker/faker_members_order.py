@@ -46,6 +46,8 @@ drink_prices = {
     14: 11500
 }
 
+order_id_counter = 1  # 전체 주문 ID 카운터
+
 # 1000명의 회원에 대해 주문 정보 생성
 for idx in range(1, 1001):
     num_orders = random.randint(10, 500)  # 주문 개수는 10부터 500개 사이에서 랜덤
@@ -85,7 +87,7 @@ for idx in range(1, 1001):
         total_purchase_amount = (food_prices[food_id] * food_quantity) + (drink_prices[drink_id] * drink_quantity)
 
         order_info = {
-            'order_id': user_orders,  # 회원의 주문 횟수를 order_id로 사용
+            'order_id': order_id_counter,  # 전체 주문 ID 사용
             'user_id': df_members.loc[idx - 1, 'account_id'],  # 회원의 account_id를 사용하여 user_id 설정
             'order_date': order_date,
             'food_id': food_id,
@@ -99,6 +101,7 @@ for idx in range(1, 1001):
             'gender': df_members.loc[idx - 1, 'Gender'],
         }
         orders.append(order_info)
+        order_id_counter += 1  # 전체 주문 ID 증가
 
 # 주문 정보를 DataFrame으로 변환
 df_orders = pd.DataFrame(orders)
