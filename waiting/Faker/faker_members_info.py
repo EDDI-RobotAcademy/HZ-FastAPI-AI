@@ -13,13 +13,13 @@ members = []
 orders = []
 
 # 원하는 수의 회원 정보 생성
-num_members = 1000  # 1000명의 회원 정보 생성
+num_members = 5000  # 10000명의 회원 정보 생성
 
 # account_id 초기화
 account_id = 1
 
-# 700명의 회원은 1988년부터 2002년 사이에서 생성
-for _ in range(700):
+# 400명의 회원은 1988년부터 2002년 사이에서 생성
+for _ in range(4000):
     while True:
         email = fake.free_email()
         if email not in generated_emails:
@@ -46,8 +46,8 @@ for _ in range(700):
     members.append(member_info)
     account_id += 1  # account_id 증가
 
-# 300명의 회원은 1924년부터 1987년, 2003년부터 2014년 사이에서 생성
-for _ in range(300):
+# 1000명의 회원은 1924년부터 1987년, 2003년부터 2014년 사이에서 생성
+for _ in range(1000):
     while True:
         email = fake.free_email()
         if email not in generated_emails:
