@@ -1,55 +1,47 @@
 from faker import Faker
 import pandas as pd
+from datetime import datetime, timedelta, date
 import random
-from datetime import datetime, timedelta
-import numpy as np
-from waiting.Faker.faker_members_info import df_members
 
 fake = Faker('ko_KR')  # 한국어 로케일 설정
 Faker.seed()  # 초기 seed 설정
 
 subscriptions = []
 
-# 1000명의 회원에 대해 구독 정보 생성
-for idx in range(1, 1001):
-    user_id = df_members.loc[idx - 1, 'account_id']
-    birthyear = df_members.loc[idx - 1, 'Birthyear']
-    gender = df_members.loc[idx - 1, 'Gender']
+# 5000명의 회원에 대해 구독 정보 생성
+for idx in range(1, 5001):
+    # 회원 정보 가져오기
+    user_id = idx
+    birthyear = fake.date_of_birth(minimum_age=18, maximum_age=70).year
+    gender = random.choice(['남성', '여성'])
 
+    # 구독 시작일 생성 (과거 2년 이내 무작위 날짜)
     subscription_start_date = fake.date_time_between(start_date='-2y', end_date='now')
-    subscription_type = random.randint(0, 2)  # 0: 프리미엄, 1: 스탠다드, 2: 베이식
-    subscription_status = random.randint(0, 1)  # 0: 활성, 1: 취소
 
-    # 만약 구독이 취소되었다면, 종료 날짜를 설정
-    if subscription_status == 1:
-        subscription_end_date = fake.date_time_between(start_date=subscription_start_date, end_date='now')
+    # 구독 종료일 생성 (구독 시작일 이후의 무작위 날짜)
+    subscription_end_date = fake.date_time_between_dates(datetime_start=subscription_start_date, datetime_end='now')
+
+    # subscription_status 정의 (구독 종료일이 지금 날짜보다 이후이면 활성, 아니면 취소)
+    if subscription_end_date > datetime.now():
+        subscription_status = 0  # 활성
     else:
-        subscription_end_date = None
+        subscription_status = 1  # 취소
 
-    last_login_date = fake.date_time_between(start_date=subscription_start_date, end_date='now')
-
-    # 평균 시청 시간과 총 시청 시간을 정규 분포로 생성
-    average_watch_time = round(np.random.normal(2.5, 1.0), 2)  # 평균 2.5시간, 표준 편차 1시간
-    total_watch_time = round(np.random.normal(100.0, 30.0), 2)  # 평균 100시간, 표준 편차 30시간
-
-    # 값이 0보다 작으면 0으로 설정
-    average_watch_time = max(0, average_watch_time)
-    total_watch_time = max(0, total_watch_time)
-
-    favorite_genres = random.choice(['액션', '범죄', 'SF', '판타지', '코미디', '스릴러', '전쟁', '스포츠', '음악', '멜로', '뮤지컬'])
+    # 고객 이탈 여부 정의
+    # subscription_status가 1(취소)이고, subscription_end_date가 오늘 날짜로부터 100일 이상 지났으면 이탈 고객으로 간주
+    if subscription_status == 1 and (datetime.now() - subscription_end_date).days > 100:
+        churn = 0  # 이탈 고객
+    else:
+        churn = 1  # 이탈하지 않은 고객
 
     subscription_info = {
         'user_id': user_id,
         'birthyear': birthyear,
         'gender': gender,
         'subscription_start_date': subscription_start_date,
-        'subscription_end_date': subscription_end_date,
-        'subscription_type': subscription_type,
+        'subscription_end_date': subscription_end_date.date(),  # datetime.date()로 변환
         'subscription_status': subscription_status,
-        'last_login_date': last_login_date,
-        'average_watch_time': average_watch_time,
-        'total_watch_time': total_watch_time,
-        'favorite_genres': favorite_genres
+        'churn': churn
     }
 
     subscriptions.append(subscription_info)
