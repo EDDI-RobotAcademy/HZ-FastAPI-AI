@@ -2,6 +2,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from purchasing_trend.service.purchasing_service_impl import PurchasingServiceImpl
+from fastapi.responses import JSONResponse
+
 import os
 
 
@@ -35,34 +37,30 @@ def get_purchasing_service():
 def kmeans_analysis(request: KMeansRequest, service: PurchasingServiceImpl = Depends(get_purchasing_service)):
     try:
         result = service.perform_kmeans_analysis(request.file_name, request.columns, request.n_clusters)
-        return result
+        return JSONResponse(content=result)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        return JSONResponse(status_code=400, content={"detail": str(e)})
 
 @purchasingTrendRouter.post("/polynomial_regression")
-
-def polynomial_regression_analysis(request: PolynomialRegressionRequest,
-                                   service: PurchasingServiceImpl = Depends(get_purchasing_service)):
+def polynomial_regression_analysis(request: PolynomialRegressionRequest, service: PurchasingServiceImpl = Depends(get_purchasing_service)):
     try:
-        result = service.perform_polynomial_regression(request.file_name, request.columns, request.target_column,
-                                                       request.degree)
-        return result
+        result = service.perform_polynomial_regression(request.file_name, request.columns, request.target_column, request.degree)
+        return JSONResponse(content=result)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        return JSONResponse(status_code=400, content={"detail": str(e)})
 
 @purchasingTrendRouter.post("/logistic_regression")
 def logistic_regression_analysis(request: LogisticRegressionRequest, service: PurchasingServiceImpl = Depends(get_purchasing_service)):
     try:
         result = service.perform_logistic_regression(request.file_name, request.columns, request.target_column)
-        return result
+        return JSONResponse(content=result)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        return JSONResponse(status_code=400, content={"detail": str(e)})
 
 @purchasingTrendRouter.post("/pca")
 def pca_analysis(request: PCARequest, service: PurchasingServiceImpl = Depends(get_purchasing_service)):
     try:
         result = service.perform_pca_analysis(request.file_name, request.columns, request.n_components)
-        return result
+        return JSONResponse(content=result)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
+        return JSONResponse(status_code=400, content={"detail": str(e)})
