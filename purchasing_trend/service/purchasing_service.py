@@ -10,3 +10,7 @@ class PurchasingService(ABC):
     @abstractmethod
     def perform_polynomial_regression(self, file_path: str, columns: list, target_column: str, degree: int):
         pass
+
+    @abstractmethod
+    def perform_logistic_regression(self, file_path: str, columns: list, target_column: str):
+        pass
