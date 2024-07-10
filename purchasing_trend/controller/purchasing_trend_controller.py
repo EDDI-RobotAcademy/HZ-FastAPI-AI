@@ -21,6 +21,11 @@ class LogisticRegressionRequest(BaseModel):
     file_name: str
     columns: list
     target_column: str
+
+class PCARequest(BaseModel):
+    file_name: str
+    columns: list
+    n_components: int
 purchasingTrendRouter = APIRouter()
 
 def get_purchasing_service():
@@ -49,6 +54,14 @@ def polynomial_regression_analysis(request: PolynomialRegressionRequest,
 def logistic_regression_analysis(request: LogisticRegressionRequest, service: PurchasingServiceImpl = Depends(get_purchasing_service)):
     try:
         result = service.perform_logistic_regression(request.file_name, request.columns, request.target_column)
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@purchasingTrendRouter.post("/pca")
+def pca_analysis(request: PCARequest, service: PurchasingServiceImpl = Depends(get_purchasing_service)):
+    try:
+        result = service.perform_pca_analysis(request.file_name, request.columns, request.n_components)
         return result
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

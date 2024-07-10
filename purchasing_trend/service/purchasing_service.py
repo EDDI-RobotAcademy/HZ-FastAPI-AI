@@ -14,3 +14,7 @@ class PurchasingService(ABC):
     @abstractmethod
     def perform_logistic_regression(self, file_path: str, columns: list, target_column: str):
         pass
+
+    @abstractmethod
+    def perform_pca_analysis(self, file_name: str, columns: list, n_components: int):
+        pass

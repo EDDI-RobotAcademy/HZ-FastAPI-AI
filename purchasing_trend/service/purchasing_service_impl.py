@@ -30,3 +30,11 @@ class PurchasingServiceImpl(PurchasingService):
             raise ValueError(f"Logistic Regression 데이터 로딩 중 오류 발생: {e}")
         coef, intercept, score = self.analysis_tool.run_logistic_regression(data, target_column)
         return {"coefficients": coef, "intercept": intercept, "score": score}
+
+    def perform_pca_analysis(self, file_name: str, columns: list, n_components: int):
+        try:
+            data = self.analysis_tool.load_data(file_name, columns)
+        except ValueError as e:
+            raise ValueError(f"PCA 데이터 로딩 중 오류 발생: {e}")
+        principal_components, explained_variance_ratio = self.analysis_tool.run_pca(data, n_components)
+        return {"principal_components": principal_components, "explained_variance_ratio": explained_variance_ratio}

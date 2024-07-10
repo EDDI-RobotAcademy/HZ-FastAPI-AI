@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression,LogisticRegression
 import os
+from sklearn.decomposition import PCA
 class MLanalyses:
     def __init__(self, base_path: str):
         self.base_path = base_path
@@ -31,6 +32,11 @@ class MLanalyses:
         model = LinearRegression()
         model.fit(X_poly, y)
         return model.coef_, model.intercept_, model.score(X_poly, y)
+
+    def run_pca(self, data: pd.DataFrame, n_components: int):
+        pca = PCA(n_components=n_components)
+        principal_components = pca.fit_transform(data)
+        return principal_components.tolist(), pca.explained_variance_ratio_.tolist()
 
     def run_logistic_regression(self, data: pd.DataFrame, target_column: str):
         X = data.drop(columns=[target_column])
