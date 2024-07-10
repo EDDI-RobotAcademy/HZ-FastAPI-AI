@@ -58,6 +58,8 @@ for idx in range(1, 1001):
 df_subscriptions = pd.DataFrame(subscriptions)
 
 # 구독 정보를 엑셀 파일로 저장
-file_path_subscriptions = 'generated_subscriptions.xlsx'
-df_subscriptions.to_excel(file_path_subscriptions, index=False)
+# file_path_subscriptions = 'generated_subscriptions.xlsx'
+file_path_subscriptions = 'generated_subscriptions.csv'
+# df_subscriptions.to_excel(file_path_subscriptions, index=False)
+df_subscriptions.to_csv(file_path_subscriptions, index=False)
 print(f"구독 정보가 {file_path_subscriptions} 파일로 저장되었습니다.")

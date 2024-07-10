@@ -107,6 +107,8 @@ for idx in range(1, 1001):
 df_orders = pd.DataFrame(orders)
 
 # 주문 정보를 엑셀 파일로 저장
-file_path_orders = 'generated_orders.xlsx'
-df_orders.to_excel(file_path_orders, index=False)
+# file_path_orders = 'generated_orders.xlsx'
+file_path_orders = 'generated_orders.csv'
+# df_orders.to_excel(file_path_orders, index=False)
+df_orders.to_csv(file_path_orders, index=False)
 print(f"주문 정보가 {file_path_orders} 파일로 저장되었습니다.")

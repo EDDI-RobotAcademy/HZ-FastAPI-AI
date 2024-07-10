@@ -78,7 +78,9 @@ for _ in range(300):
 df_members = pd.DataFrame(members)
 
 # DataFrame을 엑셀 파일로 저장
-file_path_members = 'generated_members.xlsx'
-df_members.to_excel(file_path_members, index=False)
+# file_path_members = 'generated_members.xlsx'
+file_path_members = 'generated_members.csv'
+# df_members.to_excel(file_path_members, index=False)
+df_members.to_csv(file_path_members, index=False)
 
 print(f"회원 정보가 {file_path_members} 파일로 저장되었습니다.")
