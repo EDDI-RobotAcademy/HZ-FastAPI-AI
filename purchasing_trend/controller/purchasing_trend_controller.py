@@ -1,7 +1,7 @@
 # File: waiting/purchasing_trend/controller/purchasing_trend_controller.py
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
-from waiting.purchasing_trend.service.purchasing_service_impl import PurchasingServiceImpl
+from purchasing_trend.service.purchasing_service_impl import PurchasingServiceImpl
 import os
 
 class KMeansRequest(BaseModel):
@@ -15,12 +15,12 @@ class PolynomialRegressionRequest(BaseModel):
     target_column: str
     degree: int
 
-router = APIRouter()
+purchasingTrendRouter = APIRouter()
 
 def get_purchasing_service():
     return PurchasingServiceImpl()
 
-@router.post("/kmeans")
+@purchasingTrendRouter.post("/kmeans")
 def kmeans_analysis(request: KMeansRequest, service: PurchasingServiceImpl = Depends(get_purchasing_service)):
     try:
         # 현재 작업 디렉토리를 기준으로 파일 경로 설정
@@ -31,7 +31,7 @@ def kmeans_analysis(request: KMeansRequest, service: PurchasingServiceImpl = Dep
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.post("/polynomial_regression")
+@purchasingTrendRouter.post("/polynomial_regression")
 def polynomial_regression_analysis(request: PolynomialRegressionRequest, service: PurchasingServiceImpl = Depends(get_purchasing_service)):
     try:
         # 현재 작업 디렉토리를 기준으로 파일 경로 설정

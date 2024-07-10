@@ -13,6 +13,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from pydantic import BaseModel
 
+from purchasing_trend.controller.purchasing_trend_controller import purchasingTrendRouter
+
+
 # from convolution_neural_network.controller.cnn_controller import convolutionNeuralNetworkRouter
 # # from decision_tree.controller.decision_tree_controller import decisionTreeRouter
 # from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
@@ -140,7 +143,7 @@ app = FastAPI(lifespan=lifespan)
 # 웹 브라우저 상에서 "/" 을 입력하면 (key)Hello: (value)World가 리턴
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"message": "한조 fastapi 루트입니다"}
 
 
 # 브라우저 상에 /items/4?q=test 같은 것을 넣으면
@@ -204,6 +207,7 @@ def read_item(item_id: int, q: str = None):
 # app.include_router(principalComponentAnalysisRouter)
 # app.include_router(convolutionNeuralNetworkRouter)
 # app.include_router(recurrentNeuralNetworkRouter)
+app.include_router(purchasingTrendRouter, prefix='/purchasing_trend')
 
 
 async def testTopicConsume(app: FastAPI):

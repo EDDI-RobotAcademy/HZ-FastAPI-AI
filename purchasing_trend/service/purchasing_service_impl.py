@@ -1,7 +1,7 @@
 # File: waiting/purchasing_trend/service/purchasing_service_impl.py
-from waiting.purchasing_trend.service.purchasing_service import PurchasingService
-from waiting.analyses.MLanalyses import MLanalyses
-import pandas as pd
+from purchasing_trend.service.purchasing_service import PurchasingService
+from analyses import MLanalyses
+
 
 class PurchasingServiceImpl(PurchasingService):
     def __init__(self):
