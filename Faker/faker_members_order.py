@@ -4,7 +4,7 @@ import random
 from datetime import datetime, timedelta
 import numpy as np
 
-from waiting.Faker.faker_members_info import df_members
+from Faker.faker_members_info import df_members
 
 fake = Faker('ko_KR')  # 한국어 로케일 설정
 Faker.seed()  # 초기 seed 설정
