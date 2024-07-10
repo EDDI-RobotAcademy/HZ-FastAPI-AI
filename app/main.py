@@ -21,7 +21,7 @@ from purchasing_trend.controller.purchasing_trend_controller import purchasingTr
 # from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 # from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
 # from kmeans.controller.kmeans_controller import kmeansRouter
-# from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from customer_churn_analysis.logistic_regression import logisticRegressionRouter
 # from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 # from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 # from post.controller.post_controller import postRouter
@@ -193,7 +193,7 @@ def read_item(item_id: int, q: str = None):
 # 점진적으로 개선시키는 것이 '애자일' 방식임
 # (빠른 습득 및 생산성의 비밀임 ㅇㅇ)
 
-# app.include_router(logisticRegressionRouter)
+app.include_router(logisticRegressionRouter)
 # app.include_router(trainTestEvaluationRouter)
 # app.include_router(polynomialRegressionRouter)
 # app.include_router(exponentialRegressionRouter)

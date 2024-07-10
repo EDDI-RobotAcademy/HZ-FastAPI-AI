@@ -23,3 +23,4 @@ class MLanalyses:
         model = LinearRegression()
         model.fit(X_poly, y)
         return model.coef_, model.intercept_, model.score(X_poly, y)
+
