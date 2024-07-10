@@ -5,7 +5,11 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression,LogisticRegression
 import os
 class MLanalyses:
-    def load_data(self, file_path: str, columns: list):
+    def __init__(self, base_path: str):
+        self.base_path = base_path
+
+    def load_data(self, file_name: str, columns: list):
+        file_path = os.path.join(self.base_path, file_name)
         try:
             data = pd.read_csv(file_path, usecols=columns)
         except UnicodeDecodeError as e:
@@ -33,4 +37,4 @@ class MLanalyses:
         y = data[target_column]
         model = LogisticRegression()
         model.fit(X, y)
-        return model.coef_, model.intercept_, model.score(X, y)
+        return model.coef_.tolist(), model.intercept_.tolist(), model.score(X, y)
