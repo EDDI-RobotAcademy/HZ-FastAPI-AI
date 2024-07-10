@@ -42,7 +42,7 @@ df_returns = pd.DataFrame(returns)
 
 # 반품 및 환불 기록을 엑셀 파일로 저장
 # file_path_returns = 'generated_returns.xlsx'
-file_path_returns = 'generated_returns.csv'
+file_path_returns = '../csv_data/generated_returns.json'
 # df_returns.to_excel(file_path_returns, index=False)
-df_returns.to_csv(file_path_returns, index=False)
+df_returns.to_json(file_path_returns, index=False)
 print(f"반품 및 환불 기록이 {file_path_returns} 파일로 저장되었습니다.")

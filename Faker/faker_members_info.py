@@ -79,7 +79,7 @@ df_members = pd.DataFrame(members)
 
 # DataFrame을 엑셀 파일로 저장
 # file_path_members = 'generated_members.xlsx'
-file_path_members = 'generated_members.csv'
+file_path_members = '../csv_data/generated_members.csv'
 # df_members.to_excel(file_path_members, index=False)
 df_members.to_csv(file_path_members, index=False)
 
