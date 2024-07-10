@@ -106,7 +106,7 @@ for _ in range(40):
 df = pd.DataFrame(members)
 
 # DataFrame을 엑셀 파일로 저장
-file_path = 'generated_members.csv'
+file_path = r'generated_members.csv'
 # df.to_excel(file_path, index=False)
 df.to_csv(file_path, index=False)
 
