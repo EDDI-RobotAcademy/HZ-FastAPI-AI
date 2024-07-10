@@ -31,12 +31,12 @@ def preprocess_and_normalize(df):
     df, label_encoders = label_encode(df)
 
     # 시계열 데이터 처리 (필요에 따라 조정)
-    if 'date' in df.columns:
-        df['date'] = pd.to_datetime(df['date'])
-        df['year'] = df['date'].dt.year
-        df['month'] = df['date'].dt.month
-        df['day'] = df['date'].dt.day
-        df.drop(columns=['date'], inplace=True)
+    for column in df.select_dtypes(include=['datetime64', 'object']).columns:
+        try:
+            df[column] = pd.to_datetime(df[column])
+            df[column] = df[column].astype('int64') // 10 ** 9  # 타임스탬프로 변환 (초 단위)
+        except ValueError:
+            pass  # datetime 변환 불가한 열은 무시
 
     # 클래스 데이터 (0, 1, 2 등)가 있다면 이를 숫자로 변환
     if 'class' in df.columns:
