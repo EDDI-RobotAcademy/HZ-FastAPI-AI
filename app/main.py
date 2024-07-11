@@ -14,7 +14,7 @@ from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from pydantic import BaseModel
 
 from purchasing_trend.controller.purchasing_trend_controller import purchasingTrendRouter
-
+from customer_churn_analysis.logistic_regression import logisticRegressionRouter
 
 
 
@@ -126,7 +126,7 @@ def read_item(item_id: int, q: str = None):
 
 
 app.include_router(purchasingTrendRouter, prefix='/purchasing_trend')
-
+app.include_router(logisticRegressionRouter)
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
