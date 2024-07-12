@@ -27,7 +27,9 @@ class MLanalyses:
         labels = kmeans.fit_predict(data)
         centers = kmeans.cluster_centers_
         score = silhouette_score(data, labels)
-        return labels, centers, score
+        data_points = data.values.tolist()  # 원래 데이터 포인트 값을 리스트로 변환
+        return labels.tolist(), centers.tolist(), score, data_points
+
     def run_polynomial_regression(self, data: pd.DataFrame, target_column: str, degree: int):
         X = data.drop(columns=[target_column])
         y = data[target_column]
@@ -38,12 +40,20 @@ class MLanalyses:
         predictions = model.predict(X_poly)
         mse = mean_squared_error(y, predictions)
         r2 = r2_score(y, predictions)
-        return model.coef_, model.intercept_, mse, r2
+        return model.coef_.tolist(), model.intercept_, mse, r2, X.values.tolist(), y.tolist()
+
+
+
     def run_pca(self, data: pd.DataFrame, n_components: int):
-        pca = PCA(n_components=n_components)
-        principal_components = pca.fit_transform(data)
-        explained_variance_ratio = pca.explained_variance_ratio_
-        return principal_components.tolist(), explained_variance_ratio.tolist()
+            if data is None or data.empty:
+                raise ValueError("데이터가 비어 있습니다.")
+
+            pca = PCA(n_components=n_components)
+            principal_components = pca.fit_transform(data)
+            explained_variance_ratio = pca.explained_variance_ratio_
+            loadings = pd.DataFrame(pca.components_.T, columns=[f"PC{i + 1}" for i in range(n_components)],
+                                    index=data.columns)
+            return principal_components.tolist(), explained_variance_ratio.tolist(), loadings.to_dict()
 
     def run_logistic_regression(self, data: pd.DataFrame, target_column: str, threshold: float = 0.5):
         X = data.drop(columns=[target_column])
@@ -62,4 +72,4 @@ class MLanalyses:
         recall = recall_score(y, predictions)
         f1 = f1_score(y, predictions)
         roc_auc = roc_auc_score(y, probabilities)
-        return model.coef_.tolist(), model.intercept_.tolist(), conf_matrix.tolist(), precision, recall, f1, roc_auc
+        return model.coef_.tolist(), model.intercept_.tolist(), conf_matrix.tolist(), precision, recall, f1, roc_auc, probabilities.tolist(), y.tolist()

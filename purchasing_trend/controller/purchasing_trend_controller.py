@@ -23,7 +23,7 @@ class LogisticRegressionRequest(BaseModel):
     file_name: str
     columns: list
     target_column: str
-
+    threshold: float = 0.5  # 이진 라벨 변환을 위한 임계값 추가
 class PCARequest(BaseModel):
     file_name: str
     columns: list
@@ -40,7 +40,6 @@ def kmeans_analysis(request: KMeansRequest, service: PurchasingServiceImpl = Dep
         return JSONResponse(content=result)
     except ValueError as e:
         return JSONResponse(status_code=400, content={"detail": str(e)})
-
 @purchasingTrendRouter.post("/polynomial_regression")
 def polynomial_regression_analysis(request: PolynomialRegressionRequest, service: PurchasingServiceImpl = Depends(get_purchasing_service)):
     try:
@@ -52,7 +51,7 @@ def polynomial_regression_analysis(request: PolynomialRegressionRequest, service
 @purchasingTrendRouter.post("/logistic_regression")
 def logistic_regression_analysis(request: LogisticRegressionRequest, service: PurchasingServiceImpl = Depends(get_purchasing_service)):
     try:
-        result = service.perform_logistic_regression(request.file_name, request.columns, request.target_column)
+        result = service.perform_logistic_regression(request.file_name, request.columns, request.target_column, request.threshold)
         return JSONResponse(content=result)
     except ValueError as e:
         return JSONResponse(status_code=400, content={"detail": str(e)})
